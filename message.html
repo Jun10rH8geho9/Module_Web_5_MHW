@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/main.css" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand navbar-dark bg-dark" aria-label="Second navbar example">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="MC_DUCK.png" alt="logo" />
+                </a>
+                <div class="collapse navbar-collapse" id="navbarsExample02">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Send message</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container mt-3">
+        <main class="form-signin w-50 m-auto">
+            <form id="formChat">
+                <div class="row mb-3 h-100">
+                    <label for="floatingTextarea"><h3>Message</h3></label>
+                    <li>Дізнатися поточний курс введи: <h5>exchange today</h5>
+                    </li>
+                    <li>Дізнатися курс за 10 днів введи: <h5>exchange today</h5>
+                    </li>
+                    <input type="text" id="textField" />
+                </div>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Send message</button>
+            </form>
+            <div class="subscribe-container">
+                <div id="subscribe"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        console.log('Hello world!')
+
+        const ws = new WebSocket('ws://localhost:8080')
+
+        formChat.addEventListener('submit', (e) => {
+            e.preventDefault()
+            ws.send(textField.value)
+            textField.value = null
+        })
+
+        ws.onopen = (e) => {
+            console.log('Hello WebSocket!')
+        }
+
+        ws.onmessage = (e) => {
+            console.log(e.data)
+            text = e.data
+
+            const elMsg = document.createElement('div')
+            elMsg.textContent = text
+            subscribe.appendChild(elMsg)
+        }
+    </script>
+
+    <style>
+        .subscribe-container {
+            height: 200px;
+            /* Фіксована висота контейнера */
+            overflow-y: auto;
+            /* Дозволити прокрутку, якщо контент перевищує розмір контейнера */
+            border: 1px solid #ccc;
+            /* Додайте рамку, щоб показати межі контейнера */
+            padding: 5px;
+            /* Додайте падінг для контейнера, щоб контент не прилягав прямо до меж контейнера */
+        }
+    </style>
+</body>
+
+</html>
